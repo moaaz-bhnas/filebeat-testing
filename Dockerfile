@@ -33,6 +33,6 @@ RUN npm install -g typescript
 RUN npm run build
 
 # Start filebeat and app
-CMD filebeat -e & npm start
+# CMD filebeat -e & npm start
 
 USER root
