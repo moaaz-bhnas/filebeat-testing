@@ -1,0 +1,72 @@
+filebeat.inputs:
+  - type: filestream
+    id: orchestrapay
+    fields_under_root: true
+    paths:
+      - /app/logs/*.log
+    encoding: utf-8
+
+output.logstash:
+  hosts: ['15.204.140.103:5001']
+
+  ssl:
+    enabled: false # Set to true if using SSL/TLS
+
+logging.level: info
+logging.to_files: false
+logging.to_stdout: true
+# logging.files:
+#   path: /var/log/filebeat
+#   name: filebeat
+#   keepfiles: 7
+#   permissions: 0640
+# filebeat.inputs:
+#   - type: filestream
+#     id: orchestrapay
+#     fields_under_root: true
+#     paths:
+#       - /var/log/orchestrapay/logs/*logs.log # Change this path to match where your app writes logs
+#     encoding: utf-8
+
+# output.logstash:
+#   hosts: ['15.204.140.103:5001', 'logstash:5001'] # Replace with your actual server IP and Logstash port
+#   # output.logstash:
+#   #   hosts: 'logstash:5001' # Send logs to Logstash (hostname:port) for further processing before reaching Elasticsearch
+
+#   ssl:
+#     enabled: false # Set to true if using SSL/TLS
+
+# # ======================= Filebeat Configuration =======================
+
+# # Define the inputs (log sources) Filebeat will read
+# filebeat.inputs:
+#   - type: filestream # 'filestream' is the recommended method for reading log files in recent versions
+#     id: orchestrapay # A unique ID to identify this input instance
+#     fields_under_root: true # Places custom fields at the root level of the event instead of inside a 'fields' object
+#     encoding: utf-8 # Ensures logs are correctly read using UTF-8 encoding (avoids special character issues)
+#     fields:
+#       event.dataset: orchestrapay # Custom field to help identify logs from this service in Kibana
+#     paths:
+#       # - /var/log/microservice/*.log # Location inside the container where log files are stored
+#       - /var/log/orchestrapay/logs/*logs.log # Matches logs.log and rotated logs.log.1, logs.log.2, etc.
+#     ignore_older: 48h # Ignore logs older than 7 days
+
+# # ======================= Kibana Setup (Optional) =======================
+# setup.kibana:
+#   host: 'kibana:5601'
+#   # 📌 This does NOT start Kibana; it's only used for Filebeat's setup process.
+#   # 🔹 If you run `filebeat setup`, this setting allows Filebeat to:
+#   #    ✅ Load prebuilt dashboards into Kibana
+#   #    ✅ Set up index patterns and visualizations for logs
+#   # 🔹 If you're only using Logstash and won't run `filebeat setup`, you can remove this section.
+
+# # ======================= Output Configuration =======================
+# # Define where Filebeat should send the collected logs
+# output.logstash:
+#   hosts: 'logstash:5001' # Send logs to Logstash (hostname:port) for further processing before reaching Elasticsearch
+
+# # ======================= Notes =======================
+# # 🔹 Docker volume mapping is used to link a local folder to this directory.
+# #    Check docker-compose.yml:
+# #    volumes:
+# #      - ./microservice-logs:/var/log/microservice:ro
