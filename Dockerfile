@@ -18,11 +18,13 @@ RUN npm install --force
 # Copy app source
 COPY . .
 
-# Copy Filebeat configuration
+# Copy Filebeat and Metricbeat configurations
 COPY filebeat/filebeat.yml /etc/filebeat/filebeat.yml
+COPY metricbeat/metricbeat.yml /etc/metricbeat/metricbeat.yml
 
 # Set correct permissions
-RUN chmod go-w /etc/filebeat/filebeat.yml
+RUN chmod go-w /etc/filebeat/filebeat.yml && \
+    chmod go-w /etc/metricbeat/metricbeat.yml
 
 EXPOSE 3000/tcp
 

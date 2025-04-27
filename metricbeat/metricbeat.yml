@@ -1,0 +1,41 @@
+name: metricbeat
+
+logging.level: debug
+
+metricbeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+metricbeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+metricbeat.modules:
+  - module: system
+    metricsets:
+      - cpu
+      - memory
+      - network
+      - diskio
+      - uptime
+    period: 10s
+    enabled: true
+    service.name: orchestrapay
+
+processors:
+  - add_cloud_metadata: ~
+  - add_fields:
+      target: service
+      fields:
+        name: orchestrapay
+
+output.elasticsearch:
+  hosts: ['15.204.140.103:9200']
+  username: metricbeat_internal
+  password: ${METRICBEAT_INTERNAL_PASSWORD:-M3tricB3@t!2024}
+
+http:
+  enabled: true
+  host: 0.0.0.0
