@@ -9,6 +9,10 @@ RUN apt-get update && \
 RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.17.3-amd64.deb && \
     dpkg -i filebeat-8.17.3-amd64.deb
 
+# Install Metricbeat
+RUN curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-8.17.3-amd64.deb && \
+    dpkg -i metricbeat-8.17.3-amd64.deb
+
 WORKDIR /app
 
 # Install app dependencies
@@ -34,7 +38,14 @@ RUN npm install -g typescript
 # Build app
 RUN npm run build
 
-# Start filebeat and app
-# CMD filebeat -e & npm start
+# # Create an entrypoint script to start everything
+# RUN echo '#!/bin/bash\n' \
+#          'filebeat -e &\n' \
+#          'metricbeat -e &\n' \
+#          'npm start' > /entrypoint.sh && \
+#     chmod +x /entrypoint.sh
 
 USER root
+
+# Use the entrypoint script
+# CMD ["/entrypoint.sh"]
