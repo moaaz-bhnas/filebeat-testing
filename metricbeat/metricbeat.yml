@@ -7,10 +7,10 @@ metricbeat.config:
     path: ${path.config}/modules.d/*.yml
     reload.enabled: false
 
-metricbeat.autodiscover:
-  providers:
-    - type: docker
-      hints.enabled: true
+# metricbeat.autodiscover:
+#   providers:
+#     - type: docker
+#       hints.enabled: true
 
 metricbeat.modules:
   - module: system
