@@ -38,14 +38,13 @@ RUN npm install -g typescript
 # Build app
 RUN npm run build
 
+USER root
 # # Create an entrypoint script to start everything
 # RUN echo '#!/bin/bash\n' \
 #          'filebeat -e &\n' \
 #          'metricbeat -e &\n' \
 #          'npm start' > /entrypoint.sh && \
 #     chmod +x /entrypoint.sh
-
-USER root
 
 # Use the entrypoint script
 # CMD ["/entrypoint.sh"]

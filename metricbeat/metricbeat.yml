@@ -20,14 +20,6 @@ metricbeat.autodiscover:
                 - memory
                 - network
               period: 10s
-              hosts: ['unix:///var/run/docker.sock']
-
-processors:
-  - add_cloud_metadata: ~
-  - add_fields:
-      target: service
-      fields:
-        name: orchestrapay-container
 
 output.elasticsearch:
   hosts: ['15.204.140.103:9200']
