@@ -7,29 +7,33 @@ metricbeat.config:
     path: ${path.config}/modules.d/*.yml
     reload.enabled: false
 
-# metricbeat.autodiscover:
-#   providers:
-#     - type: docker
-#       hints.enabled: true
+metricbeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
 
 metricbeat.modules:
-  - module: system
+  - module: docker
     metricsets:
+      - container
       - cpu
+      - diskio
+      - event
+      - healthcheck
+      - info
       - memory
       - network
-      - diskio
-      - uptime
+    hosts: ['unix:///var/run/docker.sock']
     period: 10s
     enabled: true
-    service.name: orchestrapay
+    service.name: orchestrapay-container
 
 processors:
   - add_cloud_metadata: ~
   - add_fields:
       target: service
       fields:
-        name: orchestrapay
+        name: orchestrapay-container
 
 output.elasticsearch:
   hosts: ['15.204.140.103:9200']
